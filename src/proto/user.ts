@@ -14,6 +14,7 @@ export interface ProtoGrpcType {
     AuthService: SubtypeConstructor<typeof grpc.Client, _authPackage_AuthServiceClient> & { service: _authPackage_AuthServiceDefinition }
     GenerateTokenRequest: MessageTypeDefinition
     JWT: MessageTypeDefinition
+    PublicKey: MessageTypeDefinition
     Refresh: MessageTypeDefinition
   }
   google: {

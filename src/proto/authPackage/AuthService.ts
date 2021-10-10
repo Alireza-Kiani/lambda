@@ -3,8 +3,10 @@
 import type * as grpc from '@grpc/grpc-js'
 import type { MethodDefinition } from '@grpc/proto-loader'
 import type { Access as _authPackage_Access, Access__Output as _authPackage_Access__Output } from '../authPackage/Access';
+import type { Empty as _google_protobuf_Empty, Empty__Output as _google_protobuf_Empty__Output } from '../google/protobuf/Empty';
 import type { GenerateTokenRequest as _authPackage_GenerateTokenRequest, GenerateTokenRequest__Output as _authPackage_GenerateTokenRequest__Output } from '../authPackage/GenerateTokenRequest';
 import type { JWT as _authPackage_JWT, JWT__Output as _authPackage_JWT__Output } from '../authPackage/JWT';
+import type { PublicKey as _authPackage_PublicKey, PublicKey__Output as _authPackage_PublicKey__Output } from '../authPackage/PublicKey';
 import type { Refresh as _authPackage_Refresh, Refresh__Output as _authPackage_Refresh__Output } from '../authPackage/Refresh';
 import type { User as _userPackage_User, User__Output as _userPackage_User__Output } from '../userPackage/User';
 
@@ -27,6 +29,15 @@ export interface AuthServiceClient extends grpc.Client {
   generateToken(argument: _authPackage_GenerateTokenRequest, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _authPackage_JWT__Output) => void): grpc.ClientUnaryCall;
   generateToken(argument: _authPackage_GenerateTokenRequest, callback: (error?: grpc.ServiceError, result?: _authPackage_JWT__Output) => void): grpc.ClientUnaryCall;
   
+  GetPublickKey(argument: _google_protobuf_Empty, metadata: grpc.Metadata, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _authPackage_PublicKey__Output) => void): grpc.ClientUnaryCall;
+  GetPublickKey(argument: _google_protobuf_Empty, metadata: grpc.Metadata, callback: (error?: grpc.ServiceError, result?: _authPackage_PublicKey__Output) => void): grpc.ClientUnaryCall;
+  GetPublickKey(argument: _google_protobuf_Empty, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _authPackage_PublicKey__Output) => void): grpc.ClientUnaryCall;
+  GetPublickKey(argument: _google_protobuf_Empty, callback: (error?: grpc.ServiceError, result?: _authPackage_PublicKey__Output) => void): grpc.ClientUnaryCall;
+  getPublickKey(argument: _google_protobuf_Empty, metadata: grpc.Metadata, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _authPackage_PublicKey__Output) => void): grpc.ClientUnaryCall;
+  getPublickKey(argument: _google_protobuf_Empty, metadata: grpc.Metadata, callback: (error?: grpc.ServiceError, result?: _authPackage_PublicKey__Output) => void): grpc.ClientUnaryCall;
+  getPublickKey(argument: _google_protobuf_Empty, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _authPackage_PublicKey__Output) => void): grpc.ClientUnaryCall;
+  getPublickKey(argument: _google_protobuf_Empty, callback: (error?: grpc.ServiceError, result?: _authPackage_PublicKey__Output) => void): grpc.ClientUnaryCall;
+  
   RefreshToken(argument: _authPackage_Refresh, metadata: grpc.Metadata, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _authPackage_JWT__Output) => void): grpc.ClientUnaryCall;
   RefreshToken(argument: _authPackage_Refresh, metadata: grpc.Metadata, callback: (error?: grpc.ServiceError, result?: _authPackage_JWT__Output) => void): grpc.ClientUnaryCall;
   RefreshToken(argument: _authPackage_Refresh, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _authPackage_JWT__Output) => void): grpc.ClientUnaryCall;
@@ -43,6 +54,8 @@ export interface AuthServiceHandlers extends grpc.UntypedServiceImplementation {
   
   GenerateToken: grpc.handleUnaryCall<_authPackage_GenerateTokenRequest__Output, _authPackage_JWT>;
   
+  GetPublickKey: grpc.handleUnaryCall<_google_protobuf_Empty__Output, _authPackage_PublicKey>;
+  
   RefreshToken: grpc.handleUnaryCall<_authPackage_Refresh__Output, _authPackage_JWT>;
   
 }
@@ -50,5 +63,6 @@ export interface AuthServiceHandlers extends grpc.UntypedServiceImplementation {
 export interface AuthServiceDefinition extends grpc.ServiceDefinition {
   CheckAuth: MethodDefinition<_authPackage_Access, _userPackage_User, _authPackage_Access__Output, _userPackage_User__Output>
   GenerateToken: MethodDefinition<_authPackage_GenerateTokenRequest, _authPackage_JWT, _authPackage_GenerateTokenRequest__Output, _authPackage_JWT__Output>
+  GetPublickKey: MethodDefinition<_google_protobuf_Empty, _authPackage_PublicKey, _google_protobuf_Empty__Output, _authPackage_PublicKey__Output>
   RefreshToken: MethodDefinition<_authPackage_Refresh, _authPackage_JWT, _authPackage_Refresh__Output, _authPackage_JWT__Output>
 }

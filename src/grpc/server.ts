@@ -21,18 +21,18 @@ class gRPCServer {
     }
 
     public static async startServer(): Promise<void> {
-        if (this.classInstance) {
+        if (!this.classInstance) {
             gRPCServer.getInstance();
         }
         const bind = () => new Promise((resolve, reject) => {
             this.classInstance.getServer().bindAsync(
-                '127.0.0.1:50050',
+                `0.0.0.0:${process.env.GRPC_SERVER_PORT || 50050}`,
                 ServerCredentials.createInsecure(),
                 (err, port) => {
                     if (err) {
                         reject(err);
                     }
-                    console.log("gRPC server is running at http://127.0.0.1:50050");
+                    console.log(`gRPC server is running at port ${process.env.GRPC_SERVER_PORT || 50050}`);
                     this.classInstance.getServer().start();
                     resolve(port);
                 }

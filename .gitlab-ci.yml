@@ -1,21 +1,17 @@
 default:
   image: docker:stable
+
+variables:
+  DOCKER_DRIVER: overlay
+
 services:
   - docker:dind
 before_script:
-  - apk update
-  - apk add py-pip python3-dev libffi-dev openssl-dev gcc libc-dev make
-  - pip install docker-compose
+  - apk add --no-cache docker-compose
+  - apk add --no-cache make
 stages:
-  - build
   - deploy
-build-job:
-  stage: build
-  script:
-    - docker-compose --version
-    - make backend_build
-
 deploy-job:
   stage: deploy
   script:
-    - make backend_db run_app
+    - make bootstrap
