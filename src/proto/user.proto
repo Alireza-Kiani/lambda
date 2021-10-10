@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package userPackage;
+
+import "google/protobuf/timestamp.proto";
+import "./auth.proto";
+
+message User {
+    string id = 1;
+    string name = 2;
+    string createdAt = 3;
+    string privilege = 4;
+    int32 v = 5;
+};
+
+message NewUser {
+    string name = 1;
+    string password = 2;
+}
+
+message TokenWithUser {
+    authPackage.JWT token = 1;
+    User user = 2;
+}
+
+message UserId {
+    string id = 1;
+}
+
+message DeleteUserResponse {
+    string deleteOperation = 1;
+}
+
+message EditUserRequest {
+    string id = 1;
+    message Payload {
+        string name = 2;
+        string password = 3;
+        string privilege = 4;
+        int32 v = 5;
+    }
+    Payload payload = 2;
+}
+
+message LoginUserRequest {
+    NewUser user = 1;
+    string userAgent = 2;
+    string clientIp = 3;
+}
+
+service UserService {
+    rpc CreateNewUser(NewUser) returns (User) {}
+    rpc LoginUser(LoginUserRequest) returns (TokenWithUser) {}
+    rpc GetUser(UserId) returns (User) {}
+    rpc EditUser (EditUserRequest) returns (User) {}
+    rpc DeleteUser (UserId) returns (User) {}
+}

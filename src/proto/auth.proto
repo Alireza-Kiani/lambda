@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package authPackage;
+
+import "google/protobuf/timestamp.proto";
+import "./user.proto";
+
+message JWT {
+    string accessToken = 1;
+    string refreshToken = 2;
+    int32 expiresIn = 3;
+    string tokenType = 4;
+};
+
+message Refresh {
+    string refreshToken = 1;
+}
+
+message Access {
+    string accessToken = 1;
+}
+
+message GenerateTokenRequest {
+    userPackage.User user = 1;
+    string userAgent = 2;
+    string clientIp = 3;
+}
+
+service AuthService {
+    rpc GenerateToken(GenerateTokenRequest) returns (JWT) {}
+    rpc RefreshToken(Refresh) returns (JWT) {}
+    rpc CheckAuth(Access) returns (userPackage.User) {}
+}
