@@ -3,11 +3,13 @@
 import type * as grpc from '@grpc/grpc-js'
 import type { MethodDefinition } from '@grpc/proto-loader'
 import type { EditUserRequest as _userPackage_EditUserRequest, EditUserRequest__Output as _userPackage_EditUserRequest__Output } from '../userPackage/EditUserRequest';
+import type { Empty as _google_protobuf_Empty, Empty__Output as _google_protobuf_Empty__Output } from '../google/protobuf/Empty';
 import type { LoginUserRequest as _userPackage_LoginUserRequest, LoginUserRequest__Output as _userPackage_LoginUserRequest__Output } from '../userPackage/LoginUserRequest';
 import type { NewUser as _userPackage_NewUser, NewUser__Output as _userPackage_NewUser__Output } from '../userPackage/NewUser';
 import type { TokenWithUser as _userPackage_TokenWithUser, TokenWithUser__Output as _userPackage_TokenWithUser__Output } from '../userPackage/TokenWithUser';
 import type { User as _userPackage_User, User__Output as _userPackage_User__Output } from '../userPackage/User';
 import type { UserId as _userPackage_UserId, UserId__Output as _userPackage_UserId__Output } from '../userPackage/UserId';
+import type { Users as _userPackage_Users, Users__Output as _userPackage_Users__Output } from '../userPackage/Users';
 
 export interface UserServiceClient extends grpc.Client {
   CreateNewUser(argument: _userPackage_NewUser, metadata: grpc.Metadata, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _userPackage_User__Output) => void): grpc.ClientUnaryCall;
@@ -46,6 +48,15 @@ export interface UserServiceClient extends grpc.Client {
   getUser(argument: _userPackage_UserId, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _userPackage_User__Output) => void): grpc.ClientUnaryCall;
   getUser(argument: _userPackage_UserId, callback: (error?: grpc.ServiceError, result?: _userPackage_User__Output) => void): grpc.ClientUnaryCall;
   
+  GetUsers(argument: _google_protobuf_Empty, metadata: grpc.Metadata, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _userPackage_Users__Output) => void): grpc.ClientUnaryCall;
+  GetUsers(argument: _google_protobuf_Empty, metadata: grpc.Metadata, callback: (error?: grpc.ServiceError, result?: _userPackage_Users__Output) => void): grpc.ClientUnaryCall;
+  GetUsers(argument: _google_protobuf_Empty, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _userPackage_Users__Output) => void): grpc.ClientUnaryCall;
+  GetUsers(argument: _google_protobuf_Empty, callback: (error?: grpc.ServiceError, result?: _userPackage_Users__Output) => void): grpc.ClientUnaryCall;
+  getUsers(argument: _google_protobuf_Empty, metadata: grpc.Metadata, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _userPackage_Users__Output) => void): grpc.ClientUnaryCall;
+  getUsers(argument: _google_protobuf_Empty, metadata: grpc.Metadata, callback: (error?: grpc.ServiceError, result?: _userPackage_Users__Output) => void): grpc.ClientUnaryCall;
+  getUsers(argument: _google_protobuf_Empty, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _userPackage_Users__Output) => void): grpc.ClientUnaryCall;
+  getUsers(argument: _google_protobuf_Empty, callback: (error?: grpc.ServiceError, result?: _userPackage_Users__Output) => void): grpc.ClientUnaryCall;
+  
   LoginUser(argument: _userPackage_LoginUserRequest, metadata: grpc.Metadata, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _userPackage_TokenWithUser__Output) => void): grpc.ClientUnaryCall;
   LoginUser(argument: _userPackage_LoginUserRequest, metadata: grpc.Metadata, callback: (error?: grpc.ServiceError, result?: _userPackage_TokenWithUser__Output) => void): grpc.ClientUnaryCall;
   LoginUser(argument: _userPackage_LoginUserRequest, options: grpc.CallOptions, callback: (error?: grpc.ServiceError, result?: _userPackage_TokenWithUser__Output) => void): grpc.ClientUnaryCall;
@@ -66,6 +77,8 @@ export interface UserServiceHandlers extends grpc.UntypedServiceImplementation {
   
   GetUser: grpc.handleUnaryCall<_userPackage_UserId__Output, _userPackage_User>;
   
+  GetUsers: grpc.handleUnaryCall<_google_protobuf_Empty__Output, _userPackage_Users>;
+  
   LoginUser: grpc.handleUnaryCall<_userPackage_LoginUserRequest__Output, _userPackage_TokenWithUser>;
   
 }
@@ -75,5 +88,6 @@ export interface UserServiceDefinition extends grpc.ServiceDefinition {
   DeleteUser: MethodDefinition<_userPackage_UserId, _userPackage_User, _userPackage_UserId__Output, _userPackage_User__Output>
   EditUser: MethodDefinition<_userPackage_EditUserRequest, _userPackage_User, _userPackage_EditUserRequest__Output, _userPackage_User__Output>
   GetUser: MethodDefinition<_userPackage_UserId, _userPackage_User, _userPackage_UserId__Output, _userPackage_User__Output>
+  GetUsers: MethodDefinition<_google_protobuf_Empty, _userPackage_Users, _google_protobuf_Empty__Output, _userPackage_Users__Output>
   LoginUser: MethodDefinition<_userPackage_LoginUserRequest, _userPackage_TokenWithUser, _userPackage_LoginUserRequest__Output, _userPackage_TokenWithUser__Output>
 }

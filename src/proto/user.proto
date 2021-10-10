@@ -3,6 +3,7 @@ syntax = "proto3";
 package userPackage;
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 import "./auth.proto";
 
 message User {
@@ -48,10 +49,15 @@ message LoginUserRequest {
     string clientIp = 3;
 }
 
+message Users {
+    repeated User users = 1;
+}
+
 service UserService {
     rpc CreateNewUser(NewUser) returns (User) {}
     rpc LoginUser(LoginUserRequest) returns (TokenWithUser) {}
     rpc GetUser(UserId) returns (User) {}
+    rpc GetUsers(google.protobuf.Empty) returns (Users) {}
     rpc EditUser (EditUserRequest) returns (User) {}
     rpc DeleteUser (UserId) returns (User) {}
 }

@@ -62,6 +62,9 @@ export default class UserService extends Service {
                     id: input.request.id
                 }, cb);
             },
+            GetUsers: (input, cb) => {
+                new UserController().getUsersGrpc(cb);
+            },
             EditUser: (input, cb) => {
                 new UserController().editUserGrpc({
                     id: input.request.id,
@@ -113,8 +116,13 @@ export default class UserService extends Service {
         try {
             const id = req.parsedUrl.searchParams.get('id');
             if (!id) {
+                let users = await new UserController().getUsers();
+                users = users.filter(user => user.id !== req.user.id);
                 res.writeHead(200);
-                res.end(JSON.stringify(req.user));
+                res.end(JSON.stringify({
+                    self: req.user,
+                    others: users
+                }));
                 return;
             }
             const user = await new UserController().getUserById(id);

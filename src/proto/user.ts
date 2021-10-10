@@ -18,6 +18,7 @@ export interface ProtoGrpcType {
   }
   google: {
     protobuf: {
+      Empty: MessageTypeDefinition
       Timestamp: MessageTypeDefinition
     }
   }
@@ -30,6 +31,7 @@ export interface ProtoGrpcType {
     User: MessageTypeDefinition
     UserId: MessageTypeDefinition
     UserService: SubtypeConstructor<typeof grpc.Client, _userPackage_UserServiceClient> & { service: _userPackage_UserServiceDefinition }
+    Users: MessageTypeDefinition
   }
 }
 

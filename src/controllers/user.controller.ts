@@ -10,6 +10,7 @@ import { UserId } from '../proto/userPackage/UserId';
 import { EditUserRequest } from '../proto/userPackage/EditUserRequest';
 import { LoginUserRequest } from '../proto/userPackage/LoginUserRequest';
 import { NewUser } from '../proto/userPackage/NewUser';
+import { Users } from '../proto/userPackage/Users';
 
 export interface CreateUserData {
     name: string,
@@ -41,7 +42,19 @@ class UserController {
         });
     }
 
-    private prepareGrpcResponse(user: User): ProtoUser {
+    private prepareGrpcResponse(user: User | User[]): ProtoUser | ProtoUser[] {
+        if (Array.isArray(user)) {
+            return user.map(dbUser => {
+                const userWithVersion = dbUser as User & { __v: number };
+                return {
+                    id: dbUser._id.toHexString(),
+                    name: dbUser.name,
+                    privilege: dbUser.privilege,
+                    createdAt: dbUser.createdAt.toISOString(),
+                    v: userWithVersion.__v
+                };
+            });
+        }
         const userWithVersion = user as User & { __v: number };
         return {
             id: user._id.toHexString(),
@@ -66,7 +79,7 @@ class UserController {
                 password: hashedPassword,
                 privilege: input.privilege ? input.privilege : Privileges.USER
             });
-            return this.prepareGrpcResponse(newUser);
+            return (this.prepareGrpcResponse(newUser) as ProtoUser);
         } catch (error) {
             console.log(error);
             throw error;
@@ -94,9 +107,9 @@ class UserController {
             if (!isPasswordValid) {
                 throw new Error('Username or password is invalid');
             }
-            const token = await this.generateTokenClientCall(this.prepareGrpcResponse(foundUser), userAgent, clientIp)
+            const token = await this.generateTokenClientCall((this.prepareGrpcResponse(foundUser) as ProtoUser), userAgent, clientIp)
             return {
-                user: this.prepareGrpcResponse(foundUser),
+                user: (this.prepareGrpcResponse(foundUser) as ProtoUser),
                 token
             }
         } catch (error) {
@@ -116,9 +129,22 @@ class UserController {
 
     public async getUserById(id: string) {
         if (id) {
-            return this.prepareGrpcResponse(await UserDbModel.findById(id));
+            return (this.prepareGrpcResponse(await UserDbModel.findById(id)) as ProtoUser);
         }
-        return null;
+        return null
+    }
+
+    public async getUsers(): Promise<ProtoUser[]> {
+        return (this.prepareGrpcResponse(await UserDbModel.find()) as ProtoUser[]);
+    }
+
+    public async getUsersGrpc(cb: sendUnaryData<Users>) {
+        try {
+            const users = (this.prepareGrpcResponse(await UserDbModel.find()) as ProtoUser[]);
+            cb(null, { users });
+        } catch (error) {
+            cb(error, null);
+        }
     }
 
     public async getUserByIdGrpc(user: UserId, cb: sendUnaryData<ProtoUser>) {
@@ -162,7 +188,7 @@ class UserController {
                     _id: id,
                     __v: currentUser.__v
                 }, update, updateOptions);
-                return this.prepareGrpcResponse(updatedUser);
+                return (this.prepareGrpcResponse(updatedUser) as ProtoUser);
             } catch (error) {
                 return null;                    
             }
@@ -182,7 +208,7 @@ class UserController {
     public async deleteUser(id: string): Promise<ProtoUser> {
         if (id) {
             const deletedUser = await UserDbModel.findByIdAndDelete(id);
-            return this.prepareGrpcResponse(deletedUser);
+            return (this.prepareGrpcResponse(deletedUser) as ProtoUser);
         }
         return null;
     }
