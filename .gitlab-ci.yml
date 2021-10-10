@@ -15,6 +15,7 @@ stages:
 build-job:
   stage: build
   script:
+    - echo "start build"
     - make backend_build
 
 deploy-job:
