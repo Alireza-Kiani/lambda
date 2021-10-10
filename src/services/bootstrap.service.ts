@@ -109,7 +109,7 @@ export default class BootstrapService extends Service {
 
     async startHttpServer() {
         this.httpServer = http.createServer(this.requestListener);
-        this.httpServer.listen(process.env.HTTP_SERVER_PORT, () => {
+        this.httpServer.listen(process.env.PORT || process.env.HTTP_SERVER_PORT || 3000, () => {
             console.log(`HTTP server is running on port ${process.env.HTTP_SERVER_PORT}`);
         });
         await gRPCServer.startServer();
