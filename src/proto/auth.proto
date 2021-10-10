@@ -3,6 +3,7 @@ syntax = "proto3";
 package authPackage;
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 import "./user.proto";
 
 message JWT {
@@ -26,8 +27,13 @@ message GenerateTokenRequest {
     string clientIp = 3;
 }
 
+message PublicKey {
+    string publicKey = 1;
+}
+
 service AuthService {
     rpc GenerateToken(GenerateTokenRequest) returns (JWT) {}
     rpc RefreshToken(Refresh) returns (JWT) {}
     rpc CheckAuth(Access) returns (userPackage.User) {}
+    rpc GetPublickKey(google.protobuf.Empty) returns (PublicKey) {}
 }

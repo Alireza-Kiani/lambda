@@ -10,15 +10,8 @@ before_script:
   - ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
   - docker-compose --version
 stages:
-  - build
   - deploy
-build-job:
-  stage: build
-  script:
-    - echo "start build"
-    - make backend_build
-
 deploy-job:
   stage: deploy
   script:
-    - make backend_db run_app
+    - make bootstrap

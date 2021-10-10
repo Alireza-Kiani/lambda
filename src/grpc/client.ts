@@ -59,14 +59,15 @@ class gRPCClient {
             let client = null;
             if (protoPath.package === 'authPackage') {
                 protoObject = (loadPackageDefinition(packageDefinition) as unknown) as AuthGrpcType;
+                console.log(process.env.AUTH_SERVICE_GRPC_HOST);
                 client = new protoObject.authPackage.AuthService(
-                    '127.0.0.1:50050',
+                    process.env.AUTH_SERVICE_GRPC_HOST || '127.0.0.1:50050',
                     credentials.createInsecure()
                 );
             } else if (protoPath.package === 'userPackage') {
                 protoObject = (loadPackageDefinition(packageDefinition) as unknown) as UserGrpcType;
                 client = new protoObject.userPackage.UserService(
-                    '127.0.0.1:50050',
+                    process.env.USER_SERVICE_GRPC_HOST || '127.0.0.1:50050',
                     credentials.createInsecure()
                 );
             }

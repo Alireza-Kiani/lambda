@@ -23,6 +23,10 @@ export default class AuthService extends Service {
                 auth: false,
                 handler: this.refreshToken
             },
+            [this.restEndpointGenerator('GET /public-key')]: {
+                auth: false,
+                handler: this.getPublicKey
+            },
             'checkAuth': {
                 auth: false,
                 handler: this.checkAuth
@@ -45,23 +49,23 @@ export default class AuthService extends Service {
                 new AuthController().refreshTokenGrpc({
                     refreshToken: input.request.refreshToken
                 }, cb);
+            },
+            GetPublickKey: (_, cb) => {
+                new AuthController().getPublicKeyGrpc(cb);
             }
         } as AuthServiceHandlers);
     }
 
     generateToken: Handler = async (body, req, res) => {
-        res.setHeader('content-type', 'application/json; charset=utf-8');
         try {
             const userInput: UserData = JSON.parse(body);
-            const newUser = await new AuthController().generateToken(userInput, req.headers['user-agent'], req.clientIp);
-            res.writeHead(200);
-            res.end(JSON.stringify(newUser));
+            const jwt = await new AuthController().generateToken(userInput, req.headers['user-agent'], req.clientIp);
+            res.send(200, jwt);
         } catch (error) {
             console.log(error);
-            res.writeHead(500);
-            res.end(JSON.stringify({
+            res.send(500, {
                 error: error?.message ? error.message : 'Internal Server Error'
-            }));
+            });
         }
     }
     
@@ -71,27 +75,36 @@ export default class AuthService extends Service {
             req.user = user;
             return user;
         } catch (error) {
-            res.setHeader('content-type', 'application/json; charset=utf-8');
-            res.writeHead(401);
-            res.end(JSON.stringify({
+            res.send(401, {
                 error: error?.message ? error.message : 'Not Authenticated'
-            }));
+            });
             return null;
         }
     }
 
     refreshToken: Handler = async (_, req, res) => {
-        res.setHeader('content-type', 'application/json; charset=utf-8');
         try {
             const jwt = await new AuthController().refreshToken(req.refreshToken);
-            res.writeHead(200);
-            res.end(JSON.stringify(jwt));
+            res.send(200, jwt);
         } catch (error) {
             res.setHeader('content-type', 'application/json; charset=utf-8');
-            res.writeHead(401);
-            res.end(JSON.stringify({
+            res.send(401, {
                 error: error?.message ? error.message : 'Not Authenticated'
-            }));
+            });
+            return null;
+        }
+    }
+
+    getPublicKey: Handler = async (_, req, res) => {
+        try {
+            const publicKey = await new AuthController().getPublicKey();
+            res.send(200, {
+                publicKey: publicKey
+            });
+        } catch (error) {
+            res.send(401, {
+                error: error?.message ? error.message : 'Not Authenticated'
+            });
             return null;
         }
     }

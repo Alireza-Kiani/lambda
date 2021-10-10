@@ -1,8 +1,8 @@
 import http from 'http';
 import { Privileges } from '../models/user.model';
-import { RequestData } from './bootstrap.service';
+import { RequestData, ResponseData } from './bootstrap.service';
 
-export type Handler<T = unknown> = (body: string, req: RequestData, res: http.ServerResponse) => void | Promise<void> | T | Promise<T>
+export type Handler<T = unknown> = (body: string, req: RequestData, res: ResponseData) => void | Promise<void> | T | Promise<T>
 export type HandlerRef<T = unknown> = () => void | Promise<void> | T | Promise<T>
 
 export type MethodSchema = Record<string, {

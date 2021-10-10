@@ -14,4 +14,7 @@ RUN npm i
 
 COPY . .
 
-CMD npm start
+ARG SERVICE=all
+RUN echo "Running container for ${SERVICE} service(s)"
+ENV CONTAINER_SERVICE=${SERVICE}
+CMD npm start -- --service=${CONTAINER_SERVICE}

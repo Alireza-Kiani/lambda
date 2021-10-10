@@ -3,7 +3,6 @@ import path from 'path';
 import crypto from 'crypto';
 import gRPCClient from '../grpc/client';
 import { JWT } from '../proto/authPackage/JWT';
-import { AuthServiceClient } from '../proto/authPackage/AuthService';
 import { User } from '../proto/userPackage/User';
 import { sendUnaryData } from '@grpc/grpc-js';
 import jwt from 'jsonwebtoken';
@@ -15,6 +14,7 @@ import { GenerateTokenRequest } from '../proto/authPackage/GenerateTokenRequest'
 import fetch from 'node-fetch';
 import UserDbModel from '../models/user.model';
 import { Refresh } from '../proto/authPackage/Refresh';
+import { PublicKey } from '../proto/authPackage/PublicKey';
 
 export interface CreateUserData {
     name: string,
@@ -175,6 +175,20 @@ class AuthController {
         try {
             const jwt = await this.refreshToken(token.refreshToken);
             cb(null, jwt);
+        } catch (error) {
+            cb(error, null);
+        }
+    }
+
+    public async getPublicKey(): Promise<string> {
+        const { publicKey } = await this.rsaKeys();
+        return publicKey;
+    }
+
+    public async getPublicKeyGrpc(cb: sendUnaryData<PublicKey>) {
+        try {
+            const { publicKey } = await this.rsaKeys();
+            cb(null, { publicKey });
         } catch (error) {
             cb(error, null);
         }
